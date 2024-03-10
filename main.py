@@ -5,75 +5,25 @@ import sys
 from utils import blue, green, red, white
 
 
-def tracker_file_call(tracker_path: str) -> None:
-	subprocess.run(['python', tracker_path])
-
-
-def bar_file_call(bar_path: str) -> None:
-	process = subprocess.run(['python', bar_path], capture_output=True, text=True)
-	if process.returncode == 0:
-		input(error_message)
-	else:
-		print(process.stdout)
-		input(success_message)
-
-
-def map_file_call(map_path: str) -> None:
-	process = subprocess.run(['python', map_path], capture_output=True, text=True)
-	if process.returncode == 0:
-		input(error_message)
-	else:
-		print(process.stdout)
-		input(success_message)
-
-
-def density_file_call(density_path: str) -> None:
-	process = subprocess.run(['python', density_path], capture_output=True, text=True)
-	if process.returncode == 0:
-		input(error_message)
-	else:
-		print(process.stdout)
-		input(success_message)
-
-
-def circles_file_call(circles_path: str) -> None:
-	process = subprocess.run(['python', circles_path], capture_output=True, text=True)
-	if process.returncode == 0:
-		input(error_message)
-	else:
-		print(process.stdout)
-		input(success_message)
-
-
-success_message = f"{blue}Успешно выполнено{white}"
-error_message = f"{red}Список занятий пуст{white}"
-
-path = os.path.abspath
-tracker_file_path = path('tracker.py')
-bar_file_path = path('bar.py')
-map_file_path = path('map.py')
-density_file_path = path('density.py')
-circles_file_path = path('circles.py')
-
-
 # Если система Windows -> cls, иначе -> clear
 def clear_screen():
 	os.system("cls" if os.name == "nt" else "clear")
 
 
 def date_request() -> int:
-	options = [
+	options = (
 		"Добавить занятия",
 		"Посмотреть активность за последние две недели",
 		"Посмотреть активность за все время",
 		"Посмотреть среднее время активности по неделям",
 		"Посмотреть активность в виде круга",
 		"Завершить сессию"
-	]
-	for i, name in enumerate(options, start=1):
-		print(f"{green}{i}{white}: {name}")
+	)
 
 	while True:
+		for ind, name in enumerate(options, start=1):
+			print(f"{green}{ind}{white}: {name}")
+
 		try:
 			activity_operation = int(input('\nВвод: '))
 			if activity_operation in (1, 2, 3, 4, 5, 6):
@@ -85,21 +35,32 @@ def date_request() -> int:
 			clear_screen()
 
 
-def basic_logic() -> None:
-	activity_operation: int = date_request()
+def file_call(file_path: str) -> None:
+	try:
+		process = subprocess.run(['python', file_path], capture_output=True, text=True)
+		if process.returncode == 0:
+			input(f"{red}Список занятий пуст{white}")
+		else:
+			print(process.stdout)
+			input(f"{blue}Успешно выполнено{white}")
+	except Exception as e:
+		print(f"{red}{e}{white}")
 
-	match activity_operation:
-		case 1:
-			tracker_file_call(tracker_file_path)
-		case 2:
-			bar_file_call(bar_file_path)
-		case 3:
-			map_file_call(map_file_path)
-		case 4:
-			density_file_call(density_file_path)
-		case 5:
-			circles_file_call(circles_file_path)
-		case 6:
+
+def basic_logic() -> None:
+	file_paths = {
+		1: 'tracker.py',
+		2: 'bar.py',
+		3: 'map.py',
+		4: 'density.py',
+		5: 'circles.py'
+	}
+	while True:
+		activity_operation: int = date_request()
+
+		if activity_operation in file_paths:
+			file_call(os.path.abspath(file_paths.get(activity_operation)))
+		elif activity_operation == 6:
 			sys.exit()
 
 

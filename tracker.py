@@ -1,9 +1,10 @@
 import platform
 import sys
+from ast import literal_eval
 from datetime import datetime, timedelta
 from os import makedirs, path, system
 from time import time
-from ast import literal_eval
+
 from setup import setup
 from utils import cyan, green, magenta, red, white
 from utils import generate_activites_times
