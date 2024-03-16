@@ -10,7 +10,8 @@ from utils import d, h, m, w
 from utils import generate_activites_times
 from utils import normalize_color
 
-if not len(save.activities):
+if not save.activities:
+	input("Список занятий пуст")
 	sys.exit()
 
 ARGS, ACTIVITIES = setup("map")

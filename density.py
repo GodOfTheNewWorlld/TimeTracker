@@ -10,7 +10,8 @@ from utils import generate_activites_times
 from utils import normalize_color
 from utils import w
 
-if not len(save.activities):
+if not save.activities:
+	input("Список занятий пуст")
 	sys.exit()
 
 ARGS, ACTIVITIES = setup("density")

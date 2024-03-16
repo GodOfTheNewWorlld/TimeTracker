@@ -8,7 +8,8 @@ import save
 from setup import setup
 from utils import d, h, w
 
-if not len(save.activities):
+if not save.activities:
+	input("Список занятий пуст")
 	sys.exit()
 
 ARGS, ACTIVITIES = setup("circles")

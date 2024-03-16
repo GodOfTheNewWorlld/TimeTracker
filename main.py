@@ -2,27 +2,27 @@ import os
 import subprocess
 import sys
 
-from utils import blue, green, red, white
+from utils import green, red, white
 
 
 # Если система Windows -> cls, иначе -> clear
 def clear_screen():
-	os.system("cls" if os.name == "nt" else "clear")
+	os.system('cls' if os.name == 'nt' else 'clear')
 
 
 def date_request() -> int:
 	options = (
-		"Добавить занятия",
-		"Посмотреть активность за последние две недели",
-		"Посмотреть активность за все время",
-		"Посмотреть среднее время активности по неделям",
-		"Посмотреть активность в виде круга",
-		"Завершить сессию"
+		'Добавить занятия',
+		'Посмотреть активность за последние две недели',
+		'Посмотреть активность за все время',
+		'Посмотреть среднее время активности по неделям',
+		'Посмотреть активность в виде круга',
+		'Завершить сессию',
 	)
 
 	while True:
 		for ind, name in enumerate(options, start=1):
-			print(f"{green}{ind}{white}: {name}")
+			print(f'{green}{ind}{white}: {name}')
 
 		try:
 			activity_operation = int(input('\nВвод: '))
@@ -31,20 +31,14 @@ def date_request() -> int:
 			else:
 				raise ValueError
 		except ValueError:
-			input(f"\n{red}Неверный ввод{white}")
+			input(f'\n{red}Неверный ввод{white}')
 			clear_screen()
 
 
 def file_call(file_path: str) -> None:
-	try:
-		process = subprocess.run(['python', file_path], capture_output=True, text=True)
-		if process.returncode == 0:
-			input(f"{red}Список занятий пуст{white}")
-		else:
-			print(process.stdout)
-			input(f"{blue}Успешно выполнено{white}")
-	except Exception as e:
-		print(f"{red}{e}{white}")
+	subprocess.run(['python', file_path])
+	# input(f'\n{green}Успешно выполнено{white}')
+	clear_screen()
 
 
 def basic_logic() -> None:
@@ -53,14 +47,15 @@ def basic_logic() -> None:
 		2: 'bar.py',
 		3: 'map.py',
 		4: 'density.py',
-		5: 'circles.py'
+		5: 'circles.py',
 	}
 	while True:
 		activity_operation: int = date_request()
 
 		if activity_operation in file_paths:
-			file_call(os.path.abspath(file_paths.get(activity_operation)))
+			file_call(file_paths.get(activity_operation))
 		elif activity_operation == 6:
+			clear_screen()
 			sys.exit()
 
 
